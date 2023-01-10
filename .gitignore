@@ -10,6 +10,16 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Maven related files
+target/
+pom.xml
+
+# vscode
+.vscode/
+
+# Mac
+.DS_Store
+
 # Package Files #
 *.jar
 *.war
