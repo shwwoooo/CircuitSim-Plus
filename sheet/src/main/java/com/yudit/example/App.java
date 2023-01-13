@@ -1,4 +1,4 @@
-package com.yudit;
+package com.yudit.example;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
