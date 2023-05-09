@@ -25,6 +25,7 @@ public class MicroState {
     }
 
     public void setldMAR(String str) {
+        System.out.println("editing MAR");
         this.ldMAR = new SimpleStringProperty(str);
     }
 
@@ -33,6 +34,7 @@ public class MicroState {
     }
 
     public void setldMDR(String str) {
+        System.out.println("editing MDR");
         this.ldMDR = new SimpleStringProperty(str);
     }
 
@@ -41,6 +43,7 @@ public class MicroState {
     }
 
     public void setldIR(String str) {
+        System.out.println("editing IR");
         this.ldIR = new SimpleStringProperty(str);
     }
 
@@ -49,6 +52,7 @@ public class MicroState {
     }
 
     public void setldREG(String str) {
+        System.out.println("editing REG");
         this.ldREG = new SimpleStringProperty(str);
     }
 
@@ -57,6 +61,7 @@ public class MicroState {
     }
 
     public void setldCC(String str) {
+        System.out.println("editing CC");
         this.ldCC = new SimpleStringProperty(str);
     }
 
@@ -65,6 +70,7 @@ public class MicroState {
     }
 
     public void setldPC(String str) {
+        System.out.println("editing PC");
         this.ldPC = new SimpleStringProperty(str);
     }
 

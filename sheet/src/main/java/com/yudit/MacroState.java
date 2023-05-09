@@ -4,12 +4,16 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.event.EventHandler;
 import javafx.util.Callback;
 import java.util.Arrays;
+import java.util.function.Function;
+
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -52,106 +56,43 @@ public class MacroState extends TableView<MicroState> {
             }
         });
 
-        ldmarCol = new TableColumn<MicroState, String>("LD.MAR");
-        ldmdrCol = new TableColumn<MicroState, String>("LD.MDR");
-        ldirCol = new TableColumn<MicroState, String>("LD.IR");
-        ldregCol = new TableColumn<MicroState, String>("LD.REG");
-        ldccCol = new TableColumn<MicroState, String>("LD.CC");
-        ldpcCol = new TableColumn<MicroState, String>("LD.PC");
-
-        ldmarCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MicroState, String>,ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<MicroState, String> param) {
-                return param.getValue().getldMAR();
-            }
-        });
-        ldmarCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        ldmarCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<MicroState,String>>() {
-            @Override
-            public void handle(CellEditEvent<MicroState, String> event) {
-                MicroState ms = thisObject.getItems().get(event.getTablePosition().getRow());
-                ms.setldMAR(event.getNewValue());
-            }
-        });
-
-        ldmdrCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MicroState, String>,ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<MicroState, String> param) {
-                return param.getValue().getldMDR();
-            }
-        });
-        ldmdrCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        ldmdrCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<MicroState,String>>() {
-            @Override
-            public void handle(CellEditEvent<MicroState, String> event) {
-                MicroState ms = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                ms.setldMDR(event.getNewValue());
-            }
-        });
-
-        ldirCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MicroState, String>,ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<MicroState, String> param) {
-                return param.getValue().getldIR();
-            }
-        });
-        ldirCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        ldirCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<MicroState,String>>() {
-            @Override
-            public void handle(CellEditEvent<MicroState, String> event) {
-                MicroState ms = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                ms.setldIR(event.getNewValue());
-            }
-        });
-
-        ldregCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MicroState, String>,ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<MicroState, String> param) {
-                return param.getValue().getldREG();
-            }
-        });
-        ldregCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        ldregCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<MicroState,String>>() {
-            @Override
-            public void handle(CellEditEvent<MicroState, String> event) {
-                MicroState ms = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                ms.setldREG(event.getNewValue());
-            }
-        });
-
-        ldccCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MicroState, String>,ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<MicroState, String> param) {
-                return param.getValue().getldCC();
-            }
-        });
-        ldccCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        ldccCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<MicroState,String>>() {
-            @Override
-            public void handle(CellEditEvent<MicroState, String> event) {
-                MicroState ms = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                ms.setldCC(event.getNewValue());
-            }
-        });
-
-        ldpcCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MicroState, String>,ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<MicroState, String> param) {
-                return param.getValue().getldPC();
-            }
-        });
-        ldpcCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        ldpcCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<MicroState,String>>() {
-            @Override
-            public void handle(CellEditEvent<MicroState, String> event) {
-                MicroState ms = event.getTableView().getItems().get(event.getTablePosition().getRow());
-                ms.setldPC(event.getNewValue());
-            }
-        });
+        ldmarCol = createColumn("LD.MAR", MicroState::getldMAR);
+        ldmdrCol = createColumn("LD.MDR", MicroState::getldMDR);
+        ldirCol = createColumn("LD.IR", MicroState::getldIR);
+        ldregCol = createColumn("LD.REG", MicroState::getldREG);
+        ldccCol = createColumn("LD.CC", MicroState::getldCC);
+        ldpcCol = createColumn("LD.PC", MicroState::getldPC);
         
         this.getColumns().addAll(Arrays.asList(ldmarCol, ldmdrCol, ldirCol, ldregCol, ldccCol, ldpcCol));
 
-        this.setPrefSize(ldmarCol.getPrefWidth()*6, 100);
+        this.setOnKeyPressed(event -> {
+            TablePosition<MicroState, String> pos = thisObject.getFocusModel().getFocusedCell() ;
+            if (pos != null && event.getCode().isLetterKey()) {
+                thisObject.edit(pos.getRow(), pos.getTableColumn());
+            }
+        });
+
+        ldmarCol.prefWidthProperty().bind(this.widthProperty().divide(6));
+        ldmdrCol.prefWidthProperty().bind(this.widthProperty().divide(6));
+        ldirCol.prefWidthProperty().bind(this.widthProperty().divide(6));
+        ldregCol.prefWidthProperty().bind(this.widthProperty().divide(6));
+        ldccCol.prefWidthProperty().bind(this.widthProperty().divide(6));
+        ldpcCol.prefWidthProperty().bind(this.widthProperty().divide(6));
+
+        ldmarCol.setResizable(false);
+        ldmdrCol.setResizable(false);
+        ldirCol.setResizable(false);
+        ldregCol.setResizable(false);
+        ldccCol.setResizable(false);
+        ldpcCol.setResizable(false);
+    }
+
+    private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
+        TableColumn<T, String> col = new TableColumn<>(title);
+        col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
+
+        col.setCellFactory(column -> EditCell.createStringEditCell());
+        return col;
     }
 
     public Label getLabel() {
