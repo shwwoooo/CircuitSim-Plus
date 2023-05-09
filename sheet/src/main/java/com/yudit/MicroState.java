@@ -1,69 +1,71 @@
 package com.yudit;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class MicroState {
 
-    private String ldMAR = null;
-    private String ldMDR = null;
-    private String ldIR = null;
-    private String ldREG = null;
-    private String ldCC = null;
-    private String ldPC = null;
+    private SimpleStringProperty ldMAR = null;
+    private SimpleStringProperty ldMDR = null;
+    private SimpleStringProperty ldIR = null;
+    private SimpleStringProperty ldREG = null;
+    private SimpleStringProperty ldCC = null;
+    private SimpleStringProperty ldPC = null;
 
-    public MicroState(String str) {
-        this.ldMAR = str;
-        this.ldMDR = str;
-        this.ldIR = str;
-        this.ldREG = str;
-        this.ldCC = str;
-        this.ldPC = str;
+    public MicroState() {
+        this.ldMAR = new SimpleStringProperty();
+        this.ldMDR = new SimpleStringProperty();
+        this.ldIR = new SimpleStringProperty();
+        this.ldREG = new SimpleStringProperty();
+        this.ldCC = new SimpleStringProperty();
+        this.ldPC = new SimpleStringProperty();
     }
 
-    public String getldMAR() {
+    public SimpleStringProperty getldMAR() {
         return ldMAR;
     }
 
     public void setldMAR(String str) {
-        this.ldMAR = str;
+        this.ldMAR = new SimpleStringProperty(str);
     }
 
-    public String getldMDR() {
+    public SimpleStringProperty getldMDR() {
         return ldMDR;
     }
 
     public void setldMDR(String str) {
-        this.ldMAR = str;
+        this.ldMDR = new SimpleStringProperty(str);
     }
 
-    public String getldIR() {
+    public SimpleStringProperty getldIR() {
         return ldIR;
     }
 
     public void setldIR(String str) {
-        this.ldMAR = str;
+        this.ldIR = new SimpleStringProperty(str);
     }
 
-    public String getldREG() {
+    public SimpleStringProperty getldREG() {
         return ldREG;
     }
 
     public void setldREG(String str) {
-        this.ldMAR = str;
+        this.ldREG = new SimpleStringProperty(str);
     }
 
-    public String getldCC() {
+    public SimpleStringProperty getldCC() {
         return ldCC;
     }
 
     public void setldCC(String str) {
-        this.ldMAR = str;
+        this.ldCC = new SimpleStringProperty(str);
     }
 
-    public String getldPC() {
+    public SimpleStringProperty getldPC() {
         return ldPC;
     }
 
     public void setldPC(String str) {
-        this.ldMAR = str;
+        this.ldPC = new SimpleStringProperty(str);
     }
 
 }

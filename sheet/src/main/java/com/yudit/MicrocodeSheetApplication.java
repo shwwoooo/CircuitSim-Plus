@@ -19,8 +19,9 @@ public class MicrocodeSheetApplication extends Application {
     public void start(Stage stage) {
         stage.setTitle("Microcode Editor");
 
-        fetchTable.getItems().add(new MicroState("1"));
-        decodeTable.getItems().add(new MicroState("2"));
+        fetchTable.getItems().add(new MicroState());
+        fetchTable.getItems().add(new MicroState());
+        decodeTable.getItems().add(new MicroState());
 
         VBox vbox = new VBox();
         vbox.setSpacing(5);
