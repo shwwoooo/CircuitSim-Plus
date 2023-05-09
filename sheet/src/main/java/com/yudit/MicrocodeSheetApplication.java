@@ -6,9 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TableHeaderRow;
  
 public class MicrocodeSheetApplication extends Application {
@@ -22,6 +26,12 @@ public class MicrocodeSheetApplication extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Microcode Editor");
+
+        Label stateName = new Label("Name of macrostate: ");
+        Label stateNum = new Label("Number of microstates: ");
+        TextField nameField = new TextField();
+        TextField numField = new TextField();
+        Button button = new Button("Add macrostate");
 
         int numRow = 3;
         ObservableList<MicroState> data = FXCollections.observableArrayList();
@@ -48,22 +58,51 @@ public class MicrocodeSheetApplication extends Application {
         decodeTable.setMaxHeight(tableHeight2);
         decodeTable.setPrefHeight(tableHeight2);
 
+        HBox hbox = new HBox(stateName, nameField, stateNum, numField, button);
+        hbox.setMargin(stateName, new Insets(5, 5, 5, 0));
+        hbox.setMargin(stateNum, new Insets(5, 5, 5, 5));
+        hbox.setMargin(button, new Insets(0, 0, 0, 5));
+
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 10, 10, 10));
-        vbox.getChildren().addAll(fetchTable.getLabel(), fetchTable, decodeTable.getLabel(), decodeTable);
+        vbox.getChildren().addAll(fetchTable.getLabel(), fetchTable, decodeTable.getLabel(), decodeTable, hbox);
 
         ScrollPane sp = new ScrollPane();
         sp.setFitToWidth(true);
         sp.setFitToHeight(true);
         sp.setContent(vbox);
         sp.setPannable(true);
-        sp.setPrefSize(480, 350);
+        sp.setPrefSize(720, 420);
 
         Scene scene = new Scene(sp);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
  
         stage.setScene(scene);
         stage.show();
+
+        button.setOnAction(event -> {
+            MacroState tableView = new MacroState(nameField.getText());
+            int rows = Integer.parseInt(numField.getText());
+
+            nameField.clear();
+            numField.clear();
+
+            ObservableList<MicroState> states = FXCollections.observableArrayList();
+            for (int i=0; i<rows; i++) {
+                states.add(new MicroState());
+            }
+            tableView.setItems(data);
+            tableView.setFixedCellSize(35);
+            TableHeaderRow header = (TableHeaderRow) tableView.lookup("TableHeaderRow");
+            double height = ((states.size()+0.8)*tableView.getFixedCellSize()) + tableView.getInsets().getTop() + tableView.getInsets().getBottom() + (header == null ? 0 : header.getHeight());
+            tableView.setMinHeight(height);
+            tableView.setMaxHeight(height);
+            tableView.setPrefHeight(height);
+            tableView.setItems(states);
+            
+            vbox.getChildren().add(vbox.getChildren().size()-1, tableView.getLabel());
+            vbox.getChildren().add(vbox.getChildren().size()-1, tableView);
+        });
     }
 }
