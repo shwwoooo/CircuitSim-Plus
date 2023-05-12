@@ -1,21 +1,17 @@
 package com.yudit;
 
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.skin.TableHeaderRow;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.event.EventHandler;
-import javafx.util.Callback;
 import java.util.Arrays;
 import java.util.function.Function;
 
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableView;
+import javafx.scene.control.skin.TableHeaderRow;
+import javafx.scene.text.Font;
 
 public class MacroState extends TableView<MicroState> {
 

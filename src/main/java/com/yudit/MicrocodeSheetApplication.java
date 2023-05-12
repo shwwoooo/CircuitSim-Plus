@@ -1,19 +1,18 @@
 package com.yudit;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TableHeaderRow;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
  
 public class MicrocodeSheetApplication extends Application {
     private MacroState fetchTable = new MacroState("FETCH");
@@ -59,9 +58,10 @@ public class MicrocodeSheetApplication extends Application {
         decodeTable.setPrefHeight(tableHeight2);
 
         HBox hbox = new HBox(stateName, nameField, stateNum, numField, button);
-        hbox.setMargin(stateName, new Insets(5, 5, 5, 0));
-        hbox.setMargin(stateNum, new Insets(5, 5, 5, 5));
-        hbox.setMargin(button, new Insets(0, 0, 0, 5));
+
+        HBox.setMargin(stateName, new Insets(5, 5, 5, 0));
+        HBox.setMargin(stateNum, new Insets(5, 5, 5, 5));
+        HBox.setMargin(button, new Insets(0, 0, 0, 5));
 
         VBox vbox = new VBox();
         vbox.setSpacing(5);
