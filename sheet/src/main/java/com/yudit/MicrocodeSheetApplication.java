@@ -1,12 +1,13 @@
 package com.yudit;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
@@ -16,8 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TableHeaderRow;
  
 public class MicrocodeSheetApplication extends Application {
-    private MacroState fetchTable = new MacroState("FETCH");
-    private MacroState decodeTable = new MacroState("DECODE");
 
     public static void main(String[] args) {
         launch(args);
@@ -33,40 +32,17 @@ public class MicrocodeSheetApplication extends Application {
         TextField numField = new TextField();
         Button button = new Button("Add macrostate");
 
-        int numRow = 3;
-        ObservableList<MicroState> data = FXCollections.observableArrayList();
-        for (int i=0; i<numRow; i++) {
-            data.add(new MicroState());
-        }
-        fetchTable.setItems(data);
-        fetchTable.setFixedCellSize(35);
-        TableHeaderRow headerRow = (TableHeaderRow) fetchTable.lookup("TableHeaderRow");
-        double tableHeight = ((data.size()+0.8)*fetchTable.getFixedCellSize()) + fetchTable.getInsets().getTop() + fetchTable.getInsets().getBottom() + (headerRow == null ? 0 : headerRow.getHeight());
-        fetchTable.setMinHeight(tableHeight);
-        fetchTable.setMaxHeight(tableHeight);
-        fetchTable.setPrefHeight(tableHeight);
-
-        ObservableList<MicroState> data2 = FXCollections.observableArrayList();
-        for (int i=0; i<numRow; i++) {
-            data2.add(new MicroState());
-        }
-        decodeTable.setItems(data2);
-        decodeTable.setFixedCellSize(35);
-        TableHeaderRow headerRow2 = (TableHeaderRow) decodeTable.lookup("TableHeaderRow");
-        double tableHeight2 = ((data2.size()+0.8)*decodeTable.getFixedCellSize()) + decodeTable.getInsets().getTop() + decodeTable.getInsets().getBottom() + (headerRow2 == null ? 0 : headerRow2.getHeight());
-        decodeTable.setMinHeight(tableHeight2);
-        decodeTable.setMaxHeight(tableHeight2);
-        decodeTable.setPrefHeight(tableHeight2);
-
         HBox hbox = new HBox(stateName, nameField, stateNum, numField, button);
-        hbox.setMargin(stateName, new Insets(5, 5, 5, 0));
-        hbox.setMargin(stateNum, new Insets(5, 5, 5, 5));
-        hbox.setMargin(button, new Insets(0, 0, 0, 5));
+        hbox.setMargin(stateName, new Insets(10, 5, 5, 0));
+        hbox.setMargin(nameField, new Insets(5, 0, 0, 0));
+        hbox.setMargin(stateNum, new Insets(10, 5, 5, 5));
+        hbox.setMargin(numField, new Insets(5, 0, 0, 0));
+        hbox.setMargin(button, new Insets(5, 0, 0, 5));
 
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 10, 10, 10));
-        vbox.getChildren().addAll(fetchTable.getLabel(), fetchTable, decodeTable.getLabel(), decodeTable, hbox);
+        vbox.getChildren().add(hbox);
 
         ScrollPane sp = new ScrollPane();
         sp.setFitToWidth(true);
@@ -84,6 +60,7 @@ public class MicrocodeSheetApplication extends Application {
         button.setOnAction(event -> {
             MacroState tableView = new MacroState(nameField.getText());
             int rows = Integer.parseInt(numField.getText());
+            Button delButton = new Button("Delete macrostate");
 
             nameField.clear();
             numField.clear();
@@ -92,7 +69,7 @@ public class MicrocodeSheetApplication extends Application {
             for (int i=0; i<rows; i++) {
                 states.add(new MicroState());
             }
-            tableView.setItems(data);
+            tableView.setItems(states);
             tableView.setFixedCellSize(35);
             TableHeaderRow header = (TableHeaderRow) tableView.lookup("TableHeaderRow");
             double height = ((states.size()+0.8)*tableView.getFixedCellSize()) + tableView.getInsets().getTop() + tableView.getInsets().getBottom() + (header == null ? 0 : header.getHeight());
@@ -101,8 +78,18 @@ public class MicrocodeSheetApplication extends Application {
             tableView.setPrefHeight(height);
             tableView.setItems(states);
             
-            vbox.getChildren().add(vbox.getChildren().size()-1, tableView.getLabel());
+            HBox labelButton = new HBox();
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            labelButton.getChildren().addAll(tableView.getLabel(), spacer, delButton);
+            vbox.getChildren().add(vbox.getChildren().size()-1, labelButton);
             vbox.getChildren().add(vbox.getChildren().size()-1, tableView);
+
+            delButton.setOnAction(delEvent -> {
+                int index = vbox.getChildren().indexOf(labelButton);
+                vbox.getChildren().remove(index);
+                vbox.getChildren().remove(index);
+            });
         });
     }
 }
