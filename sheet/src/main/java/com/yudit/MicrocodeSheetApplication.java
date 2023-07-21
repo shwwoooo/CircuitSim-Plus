@@ -1,5 +1,8 @@
 package com.yudit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +29,9 @@ public class MicrocodeSheetApplication extends Application {
     public void start(Stage stage) {
         stage.setTitle("Microcode Editor");
 
+        List<MacroState> macroList = new ArrayList<>();
+        Button saveButton = new Button("Save/Export");
+
         Label stateName = new Label("Name of macrostate: ");
         Label stateNum = new Label("Number of microstates: ");
         TextField nameField = new TextField();
@@ -33,15 +39,16 @@ public class MicrocodeSheetApplication extends Application {
         Button button = new Button("Add macrostate");
 
         HBox hbox = new HBox(stateName, nameField, stateNum, numField, button);
-        hbox.setMargin(stateName, new Insets(10, 5, 5, 0));
-        hbox.setMargin(nameField, new Insets(5, 0, 0, 0));
-        hbox.setMargin(stateNum, new Insets(10, 5, 5, 5));
-        hbox.setMargin(numField, new Insets(5, 0, 0, 0));
-        hbox.setMargin(button, new Insets(5, 0, 0, 5));
+        HBox.setMargin(stateName, new Insets(10, 5, 5, 0));
+        HBox.setMargin(nameField, new Insets(5, 0, 0, 0));
+        HBox.setMargin(stateNum, new Insets(10, 5, 5, 5));
+        HBox.setMargin(numField, new Insets(5, 0, 0, 0));
+        HBox.setMargin(button, new Insets(5, 0, 0, 5));
 
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 10, 10, 10));
+        vbox.getChildren().add(saveButton);
         vbox.getChildren().add(hbox);
 
         ScrollPane sp = new ScrollPane();
@@ -49,7 +56,7 @@ public class MicrocodeSheetApplication extends Application {
         sp.setFitToHeight(true);
         sp.setContent(vbox);
         sp.setPannable(true);
-        sp.setPrefSize(720, 420);
+        sp.setPrefSize(1230, 540);
 
         Scene scene = new Scene(sp);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
@@ -59,24 +66,25 @@ public class MicrocodeSheetApplication extends Application {
 
         button.setOnAction(event -> {
             MacroState tableView = new MacroState(nameField.getText());
-            int rows = Integer.parseInt(numField.getText());
+            macroList.add(tableView);
+            tableView.rows = Integer.parseInt(numField.getText());
             Button delButton = new Button("Delete macrostate");
 
             nameField.clear();
             numField.clear();
 
-            ObservableList<MicroState> states = FXCollections.observableArrayList();
-            for (int i=0; i<rows; i++) {
-                states.add(new MicroState());
+            tableView.states = FXCollections.observableArrayList();
+            for (int i=0; i<tableView.rows; i++) {
+                tableView.states.add(new MicroState());
             }
-            tableView.setItems(states);
-            tableView.setFixedCellSize(35);
+            tableView.setItems(tableView.states);
+            tableView.setFixedCellSize(34);
             TableHeaderRow header = (TableHeaderRow) tableView.lookup("TableHeaderRow");
-            double height = ((states.size()+0.8)*tableView.getFixedCellSize()) + tableView.getInsets().getTop() + tableView.getInsets().getBottom() + (header == null ? 0 : header.getHeight());
+            double height = ((tableView.states.size()+1)*tableView.getFixedCellSize()) + tableView.getInsets().getTop() + tableView.getInsets().getBottom() + (header == null ? 0 : header.getHeight());
             tableView.setMinHeight(height);
             tableView.setMaxHeight(height);
             tableView.setPrefHeight(height);
-            tableView.setItems(states);
+            tableView.setItems(tableView.states);
             
             HBox labelButton = new HBox();
             Region spacer = new Region();
@@ -90,6 +98,16 @@ public class MicrocodeSheetApplication extends Application {
                 vbox.getChildren().remove(index);
                 vbox.getChildren().remove(index);
             });
+        });
+
+        saveButton.setOnAction(saveEvent -> {
+            for (MacroState macroState : macroList) {
+                String[] dataGrid = macroState.getData();
+                for (String row : dataGrid) {
+                    System.out.print(row);
+                    System.out.println();
+                }
+            }
         });
     }
 }

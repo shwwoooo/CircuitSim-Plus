@@ -121,22 +121,22 @@ public class EditCell<S, T> extends TableCell<S, T> {
                         new TablePosition<S, T>(table, getIndex(), column),
                         TableColumn.editCommitEvent(), item);
                 Event.fireEvent(column, event);
-                MicroState ms = (MicroState) getTableView().getItems().get(getIndex());
-                if (column.getText().equals("LD.MAR")) {
-                    ms.setldMAR((String) event.getNewValue());
-                } else if (column.getText().equals("LD.MDR")) {
-                    ms.setldMDR((String) event.getNewValue());
-                } else if (column.getText().equals("LD.IR")) {
-                    ms.setldIR((String) event.getNewValue());
-                } else if (column.getText().equals("LD.REG")) {
-                    ms.setldREG((String) event.getNewValue());
-                } else if (column.getText().equals("LD.CC")) {
-                    ms.setldCC((String) event.getNewValue());
-                } else if (column.getText().equals("LD.PC")) {
-                    ms.setldPC((String) event.getNewValue());
-                } else {
-                    System.out.println("out abound column");
-                }
+                // MicroState ms = (MicroState) getTableView().getItems().get(getIndex());
+                // if (column.getText().equals("LD.MAR")) {
+                //     ms.setldMAR((String) event.getNewValue());
+                // } else if (column.getText().equals("LD.MDR")) {
+                //     ms.setldMDR((String) event.getNewValue());
+                // } else if (column.getText().equals("LD.IR")) {
+                //     ms.setldIR((String) event.getNewValue());
+                // } else if (column.getText().equals("LD.REG")) {
+                //     ms.setldREG((String) event.getNewValue());
+                // } else if (column.getText().equals("LD.CC")) {
+                //     ms.setldCC((String) event.getNewValue());
+                // } else if (column.getText().equals("LD.PC")) {
+                //     ms.setldPC((String) event.getNewValue());
+                // } else {
+                //     System.out.println("out abound column");
+                // }
             }
         }
 
