@@ -1,4 +1,4 @@
-package com.yudit;
+package com.example.circuitsimplus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,22 +121,50 @@ public class EditCell<S, T> extends TableCell<S, T> {
                         new TablePosition<S, T>(table, getIndex(), column),
                         TableColumn.editCommitEvent(), item);
                 Event.fireEvent(column, event);
-                // MicroState ms = (MicroState) getTableView().getItems().get(getIndex());
-                // if (column.getText().equals("LD.MAR")) {
-                //     ms.setldMAR((String) event.getNewValue());
-                // } else if (column.getText().equals("LD.MDR")) {
-                //     ms.setldMDR((String) event.getNewValue());
-                // } else if (column.getText().equals("LD.IR")) {
-                //     ms.setldIR((String) event.getNewValue());
-                // } else if (column.getText().equals("LD.REG")) {
-                //     ms.setldREG((String) event.getNewValue());
-                // } else if (column.getText().equals("LD.CC")) {
-                //     ms.setldCC((String) event.getNewValue());
-                // } else if (column.getText().equals("LD.PC")) {
-                //     ms.setldPC((String) event.getNewValue());
-                // } else {
-                //     System.out.println("out abound column");
-                // }
+                 MicroState ms = (MicroState) getTableView().getItems().get(getIndex());
+                 if (column.getText().equals("LD.MAR\n1bit")) {
+                     ms.setldMAR((String) event.getNewValue());
+                 } else if (column.getText().equals("LD.MDR\n1bit")) {
+                     ms.setldMDR((String) event.getNewValue());
+                 } else if (column.getText().equals("LD.IR\n1bit")) {
+                     ms.setldIR((String) event.getNewValue());
+                 } else if (column.getText().equals("LD.REG\n1bit")) {
+                     ms.setldREG((String) event.getNewValue());
+                 } else if (column.getText().equals("LD.CC\n1bit")) {
+                     ms.setldCC((String) event.getNewValue());
+                 } else if (column.getText().equals("GatePC\n1bit")) {
+                     ms.setldPC((String) event.getNewValue());
+                 } else if (column.getText().equals("GateMDR\n1bit")) {
+                     ms.setgateMDR((String) event.getNewValue());
+                 } else if (column.getText().equals("GateALU\n1bit")) {
+                     ms.setgateALU((String) event.getNewValue());
+                 } else if (column.getText().equals("GateMARMUX\n1bit")) {
+                     ms.setgateMARMUX((String) event.getNewValue());
+                 } else if (column.getText().equals("PCMUX\n2bits")) {
+                     ms.setPCMUX((String) event.getNewValue());
+                 } else if (column.getText().equals("DRMUX\n1bit")) {
+                     ms.setDRMUX((String) event.getNewValue());
+                 } else if (column.getText().equals("SR1MUX\n1bit")) {
+                     ms.setSR1MUX((String) event.getNewValue());
+                 } else if (column.getText().equals("DRMUX\n1bit")) {
+                     ms.setDRMUX((String) event.getNewValue());
+                 } else if (column.getText().equals("ADDR1MUX\n1bit")) {
+                     ms.setADDR1MUX((String) event.getNewValue());
+                 } else if (column.getText().equals("ADDR2MUX\n2bits")) {
+                     ms.setADDR2MUX((String) event.getNewValue());
+                 } else if (column.getText().equals("MARMUX\n1bit")) {
+                     ms.setMARMUX((String) event.getNewValue());
+                 } else if (column.getText().equals("ALUK\n2bits")) {
+                     ms.setALUK((String) event.getNewValue());
+                 } else if (column.getText().equals("MEM.EN\n1bit")) {
+                     ms.setMEMEN((String) event.getNewValue());
+                 } else if (column.getText().equals("R.W\n1bit")) {
+                     ms.setRW((String) event.getNewValue());
+                 } else if (column.getText().equals("NEXT\n6bits")) {
+                     ms.setNEXT((String) event.getNewValue());
+                 } else {
+                     System.out.println("out abound column");
+                 }
             }
         }
 
